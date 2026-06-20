@@ -1,0 +1,6 @@
+{
+  "name": "Yash Trivedi Portfolio",
+  "description": "A modern and responsive portfolio website for Yash Trivedi, AI, Cloud & Web Developer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
