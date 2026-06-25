@@ -36,14 +36,15 @@ export default function Projects() {
     if (stored) {
       try {
         const parsed: Project[] = JSON.parse(stored);
-        // Refresh properties of non-custom (initial) projects so modifications in data.ts reflect instantly
-        const updatedList = parsed.map(p => {
-          const matchingStatic = INITIAL_PROJECTS.find(ip => ip.id === p.id);
-          if (matchingStatic) {
-            return { ...matchingStatic };
-          }
-          return p;
-        });
+        const updatedList = parsed
+          .map(p => {
+            const matchingStatic = INITIAL_PROJECTS.find(ip => ip.id === p.id);
+            if (matchingStatic) {
+              return { ...matchingStatic };
+            }
+            return p;
+          })
+          .filter(p => p.isCustom || INITIAL_PROJECTS.some(ip => ip.id === p.id));
         
         // Also ensure any newly added static projects that missed the cache are prepended
         const missingStatic = INITIAL_PROJECTS.filter(ip => !updatedList.some(p => p.id === ip.id));

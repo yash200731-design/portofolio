@@ -20,12 +20,12 @@ export const INITIAL_PROJECTS: Project[] = [
     isCustom: false
   },
   {
-    id: "e-commerce-website",
-    name: "E-Commerce Website",
-    description: "A fully responsive multi-category online store featuring instant responsive product filters, fluid local cart persistence, and beautiful glassmorphic micro-animations.",
-    technologies: ["HTML", "CSS", "JavaScript", "GitHub", "Responsive Design"],
-    githubUrl: "https://github.com/yash200731-design/Happy_Hookers",
-    demoUrl: "https://happy-hookers.vercel.app/",
+    id: "ai-translator",
+    name: "AI Translator",
+    description: "A real-time AI-powered translation web application leveraging the Google Gemini API to translate text across multiple languages with contextual awareness.",
+    technologies: ["React", "TypeScript", "Vite", "Gemini API", "Node.js", "GitHub"],
+    githubUrl: "https://github.com/yash200731-design/ai_transalator",
+    demoUrl: "https://ai-transalator.vercel.app/",
     isCustom: false
   }
 ];
