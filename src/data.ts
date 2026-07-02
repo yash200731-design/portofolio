@@ -27,6 +27,15 @@ export const INITIAL_PROJECTS: Project[] = [
     githubUrl: "https://github.com/yash200731-design/ai_transalator",
     demoUrl: "https://ai-transalator.vercel.app/",
     isCustom: false
+  },
+  {
+    id: "fake-news",
+    name: "Fake News Detector",
+    description: "An AI-powered classification dashboard that analyzes news articles and text blocks in real time to detect misleading information and check fact authenticity.",
+    technologies: ["React", "Vite", "Tailwind CSS", "Axios", "GitHub"],
+    githubUrl: "https://github.com/yash200731-design/fake-news",
+    demoUrl: "https://fake-news-ten-flame.vercel.app/",
+    isCustom: false
   }
 ];
 
