@@ -6,8 +6,8 @@ export const INITIAL_PROJECTS: Project[] = [
     name: "Sentiment Analysis",
     description: "An AI-powered natural language processing application that classifies text reviews and social feeds into sentiment categories with dynamic graphical indicators.",
     technologies: ["Python", "AI/ML", "NLP", "Git", "Streamlit"],
-    githubUrl: "https://github.com/yash200731-design/sentiment-analysis",
-    demoUrl: "https://github.com/yash200731-design/sentiment-analysis#demo",
+    githubUrl: "https://github.com/yash200731-design/sentiment-anlyasis",
+    demoUrl: "https://sentiment-anlyasis.vercel.app/",
     isCustom: false
   },
   {
