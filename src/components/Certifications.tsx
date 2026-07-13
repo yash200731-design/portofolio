@@ -33,17 +33,17 @@ export default function Certifications() {
   return (
     <section
       id="certifications"
-      className="py-20 bg-slate-50 dark:bg-slate-950/40 border-t border-slate-100 dark:border-slate-800/80 transition-colors"
+      className="py-20 bg-transparent border-t border-[#e0e0d8] dark:border-[#2a2a28] transition-colors"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#efefea] dark:bg-[#161616] text-[#888880] border border-[#e0e0d8] dark:border-[#2a2a28]">
             <Award className="w-4 h-4 text-indigo-500" />
             <span className="text-xs font-semibold font-mono tracking-wider uppercase">Credentials</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-slate-950 dark:text-white">
+          <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-[#0e0e0e] dark:text-[#f5f5f0]">
             Certifications & Training
           </h2>
           <div className="h-1 w-16 bg-indigo-500 mx-auto rounded" />
@@ -56,7 +56,7 @@ export default function Certifications() {
             return (
               <div
                 key={index}
-                className="group relative flex flex-col justify-between bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-3xl p-6 shadow-sm hover:shadow-xl hover:border-indigo-500/30 dark:hover:border-indigo-400/30 hover:-translate-y-1 transition-all duration-300"
+                className="group relative flex flex-col justify-between bg-[#efefea] dark:bg-[#161616] border border-[#e0e0d8] dark:border-[#2a2a28] rounded-3xl p-6 shadow-sm hover:shadow-xl hover:border-indigo-500/30 dark:hover:border-indigo-400/30 hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="space-y-5">
                   {/* Badge Row & Credential Verification Link */}

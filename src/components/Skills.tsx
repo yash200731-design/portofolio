@@ -72,17 +72,17 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      className="py-20 bg-slate-50 dark:bg-slate-950/40 border-t border-slate-100 dark:border-slate-800/80 transition-colors"
+      className="py-20 bg-transparent border-t border-[#e0e0d8] dark:border-[#2a2a28] transition-colors"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#efefea] dark:bg-[#161616] text-[#888880] border border-[#e0e0d8] dark:border-[#2a2a28]">
             <Layers className="w-4 h-4 text-indigo-500" />
             <span className="text-xs font-semibold font-mono tracking-wider uppercase">Tech Stack</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-slate-950 dark:text-white">
+          <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-[#0e0e0e] dark:text-[#f5f5f0]">
             My Skills & Expertise
           </h2>
           <div className="h-1 w-16 bg-indigo-500 mx-auto rounded" />
@@ -96,8 +96,8 @@ export default function Skills() {
               onClick={() => setSelectedCategory(category)}
               className={`px-4 py-2 text-sm sm:text-base font-semibold rounded-xl border transition-all cursor-pointer ${
                 selectedCategory === category
-                  ? "bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-600/15"
-                  : "bg-white dark:bg-slate-900 border-slate-200/55 dark:border-slate-800/80 text-slate-600 dark:text-slate-350 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  ? "bg-[#6366f1] border-[#6366f1] text-white shadow-md shadow-indigo-600/15"
+                  : "bg-[#efefea] dark:bg-[#161616] border-[#e0e0d8] dark:border-[#2a2a28] text-[#888880] hover:text-[#0e0e0e] dark:hover:text-[#f5f5f0]"
               }`}
             >
               {category}
@@ -110,7 +110,7 @@ export default function Skills() {
           {filteredSkills.map((skill: Skill) => (
             <div
               key={skill.name}
-              className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800/70 shadow-sm hover:border-indigo-500/30 dark:hover:border-indigo-400/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+              className="p-6 rounded-2xl bg-[#efefea] dark:bg-[#161616] border border-[#e0e0d8] dark:border-[#2a2a28] shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
             >
               <div className="space-y-4">
                 {/* Header */}

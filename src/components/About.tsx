@@ -1,112 +1,205 @@
-import { Brain, Cloud, Rocket, GraduationCap, CodeXml, Flame } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+
+interface Watermelon {
+  id: number;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  rotation: number;
+  rotSpeed: number;
+}
 
 export default function About() {
-  const corePillars = [
+  const [watermelons, setWatermelons] = useState<Watermelon[]>([]);
+  const nextId = useRef(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Watermelon gravity animation loop
+  useEffect(() => {
+    if (watermelons.length === 0) return;
+
+    let animFrame: number;
+    const gravity = 0.45;
+    const bounceDecay = 0.55;
+
+    const updatePhysics = () => {
+      setWatermelons(prev =>
+        prev
+          .map(w => {
+            let nextX = w.x + w.vx;
+            let nextY = w.y + w.vy;
+            let nextVy = w.vy + gravity;
+            let nextVx = w.vx;
+            let nextRot = w.rotation + w.rotSpeed;
+
+            // Bounce off bottom of viewport
+            if (nextY > window.innerHeight - 50) {
+              nextY = window.innerHeight - 50;
+              nextVy = -Math.abs(nextVy) * bounceDecay;
+              // Add a bit of friction/drift
+              nextVx *= 0.95;
+            }
+
+            // Bounce off side walls
+            if (nextX < 10) {
+              nextX = 10;
+              nextVx = Math.abs(nextVx) * bounceDecay;
+            } else if (nextX > window.innerWidth - 50) {
+              nextX = window.innerWidth - 50;
+              nextVx = -Math.abs(nextVx) * bounceDecay;
+            }
+
+            return {
+              ...w,
+              x: nextX,
+              y: nextY,
+              vy: nextVy,
+              vx: nextVx,
+              rotation: nextRot
+            };
+          })
+          // Filter out particles that stop bouncing and exit left/right or get stuck
+          .filter(w => w.y < window.innerHeight && Math.abs(w.vy) > 0.05 || w.y < window.innerHeight - 60)
+      );
+
+      animFrame = requestAnimationFrame(updatePhysics);
+    };
+
+    animFrame = requestAnimationFrame(updatePhysics);
+    return () => cancelAnimationFrame(animFrame);
+  }, [watermelons]);
+
+  const spawnWatermelon = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const id = nextId.current++;
+    // Spawn at mouse click location
+    const x = e.clientX;
+    const y = e.clientY;
+
+    // Random velocity
+    const vx = (Math.random() - 0.5) * 12;
+    const vy = -Math.random() * 15 - 5;
+    const rotSpeed = (Math.random() - 0.5) * 10;
+
+    const newWatermelon: Watermelon = {
+      id,
+      x,
+      y,
+      vx,
+      vy,
+      rotation: 0,
+      rotSpeed
+    };
+
+    setWatermelons(prev => [...prev, newWatermelon]);
+  };
+
+  const facets = [
     {
-      icon: <Brain className="w-6 h-6 text-purple-500" />,
-      title: "AI & Machine Learning",
-      description: "Developing intelligent algorithms and models with a specific interest in Natural Language Processing (NLP) and predictive classifiers.",
+      num: "01",
+      title: "What I do",
+      body: "Over the years I've explored multiple dimensions of software engineering—from building Natural Language Processing models and classification pipelines in Python, to deploying serverless carbon-efficiency logic on AWS, and coding clean React templates."
     },
     {
-      icon: <Cloud className="w-6 h-6 text-sky-500" />,
-      title: "AWS Cloud Infrastructure",
-      description: "Architecting sustainable, on-demand serverless workloads, secure API gateways, and robust storage setups on Amazon Web Services.",
+      num: "02",
+      title: "How I think",
+      body: "I break complex tasks down to their absolute first principles before writing code. I focus heavily on creating modular foundations, write self-documenting clean configurations, and prioritize performance and sustainability over early speed."
     },
     {
-      icon: <Rocket className="w-6 h-6 text-emerald-500" />,
-      title: "Full-Stack Development",
-      description: "Crafting fully-responsive, intuitive interfaces styled meticulously with modern structures that transition gracefully across viewports.",
-    },
+      num: "03",
+      title: "What I'm after",
+      body: "I am constantly seeking to learn new paradigms, build production-grade architectures, and collaborate with ambitious teams who are excited about building products for the intelligence-driven era."
+    }
   ];
 
   return (
     <section
       id="about"
-      className="py-20 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800/80 transition-colors"
+      ref={containerRef}
+      className="py-20 bg-transparent px-6 sm:px-12 lg:px-20 border-t border-[#e0e0d8] dark:border-[#2a2a28] transition-colors relative"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-            <GraduationCap className="w-4 h-4 text-indigo-500" />
-            <span className="text-xs font-semibold font-mono tracking-wider uppercase">My Journey</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-slate-950 dark:text-white">
-            About Me
+      {/* Watermelon overlay particles container */}
+      {watermelons.map(w => (
+        <span
+          key={w.id}
+          className="fixed text-4xl pointer-events-none select-none z-50 transition-transform duration-75"
+          style={{
+            left: w.x,
+            top: w.y,
+            transform: `rotate(${w.rotation}deg)`,
+            lineHeight: 1
+          }}
+        >
+          🍉
+        </span>
+      ))}
+
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        {/* Left Column: Heading & Bio */}
+        <div className="space-y-6 text-left max-w-xl">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-[#888880] leading-none">
+            About
+          </p>
+          <h2 className="text-3xl sm:text-4xl lg:text-[48px] font-display font-light text-[#0e0e0e] dark:text-[#f5f5f0] leading-[1.1] tracking-tight">
+            A software developer,<br />
+            driven by curiosity.
           </h2>
-          <div className="h-1 w-16 bg-indigo-500 mx-auto rounded" />
+          <p 
+            className="doodle-text text-2xl text-[#888880] tracking-wide inline-block"
+            style={{ fontFamily: 'Caveat, cursive', transform: 'rotate(-2.5deg)', transformOrigin: 'left center' }}
+          >
+            & the fun of the journey
+          </p>
+          <p className="text-sm sm:text-base font-light text-[#888880] leading-relaxed pt-4">
+            I am a software engineer specializing in bridging artificial intelligence systems with robust cloud deployments and responsive web applications. With a focus on performance and architectural simplicity, I design systems that solve complex problems using modular, clean setups.
+          </p>
         </div>
 
-        {/* Story Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* Bio Description Column */}
-          <div className="lg:col-span-6 space-y-6">
-            <h3 className="text-2xl font-display font-bold text-slate-800 dark:text-slate-200">
-              A student building software engineered for the intelligence-driven era.
-            </h3>
-            
-            <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-base font-sans">
-              I am an aspiring software engineer and developer specializing in bridging the gap between advanced artificial intelligence constructs, cloud architectures, and highly usable web interfaces. As a student, I am dedicated to continuous learning, building production-hardened workflows, and contributing to sustainability-focused technical frameworks.
-            </p>
-
-            <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-base font-sans">
-              From coding ML pipelines in Python to designing carbon-efficient serverless workflows on AWS (such as the Green Code Choice project) and crafting clean UX with modern tech stacks, I approach technical problems with a philosophy of simplicity, performance, and clean code.
-            </p>
-
-            {/* Quick stats grid inside About */}
-            <div className="grid grid-cols-3 gap-4 pt-4">
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center">
-                <div className="text-2xl font-display font-extrabold text-indigo-600 dark:text-indigo-400">
-                  3+
-                </div>
-                <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">
-                  Core Projects
-                </div>
+        {/* Right Column: Numeric Facets */}
+        <ol className="space-y-12" role="list">
+          {facets.map((facet, idx) => (
+            <li key={idx} className="flex gap-6 items-start text-left">
+              <span className="text-xs font-bold font-mono text-[#888880] pt-1">
+                {facet.num}
+              </span>
+              <div className="space-y-2">
+                <h3 className="text-base font-bold text-[#0e0e0e] dark:text-[#f5f5f0]">
+                  {facet.title}
+                </h3>
+                <p className="text-xs sm:text-sm font-light text-[#888880] leading-relaxed">
+                  {facet.body}
+                </p>
               </div>
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center">
-                <div className="text-2xl font-display font-extrabold text-sky-600 dark:text-sky-400">
-                  3+
-                </div>
-                <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">
-                  Certifications
-                </div>
-              </div>
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center">
-                <div className="text-2xl font-display font-extrabold text-emerald-600 dark:text-emerald-400">
-                  100%
-                </div>
-                <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">
-                  Commitment
-                </div>
-              </div>
-            </div>
-          </div>
+            </li>
+          ))}
+        </ol>
+      </div>
 
-          {/* Core Pillars List */}
-          <div className="lg:col-span-6 space-y-6">
-            {corePillars.map((pillar, i) => (
-              <div
-                key={i}
-                className="flex items-start space-x-4 p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800/70 hover:border-indigo-500/30 dark:hover:border-indigo-400/30 hover:shadow-md transition-all duration-300"
-              >
-                <div className="p-3 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200/20 dark:border-slate-700/50 flex-shrink-0">
-                  {pillar.icon}
-                </div>
-                <div className="space-y-1">
-                  <h4 className="text-base font-semibold text-slate-900 dark:text-white">
-                    {pillar.title}
-                  </h4>
-                  <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-sans">
-                    {pillar.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
+      {/* Interactive Off-The-Clock Watermelon Clicker at the bottom */}
+      <div className="max-w-7xl mx-auto w-full pt-20 border-t border-[#e0e0d8]/50 dark:border-[#2a2a28]/50 mt-20 text-left">
+        <p className="text-[11px] font-bold uppercase tracking-widest text-[#888880] leading-none mb-2">
+          off the clock
+        </p>
+        <h3 className="text-lg sm:text-xl font-light text-[#0e0e0e] dark:text-[#f5f5f0] flex flex-wrap items-center gap-1.5">
+          When I'm not building systems, I'm usually thinking about{" "}
+          <button
+            onClick={spawnWatermelon}
+            className="font-bold underline text-[#e5484d] hover:text-[#c9373c] inline-flex items-center space-x-1 cursor-pointer select-none bg-transparent border-0 p-0"
+          >
+            <span>watermelons</span>
+            <span role="img" aria-label="watermelon" className="hover:scale-125 transition-transform">🍉</span>
+          </button>
+          <span 
+            className="text-xs text-[#888880] block sm:inline-block ml-1 font-mono tracking-wider"
+            style={{ fontFamily: 'Caveat, cursive', fontSize: '15px' }}
+          >
+            &larr; go on, click it
+          </span>
+        </h3>
+        <p className="text-xs sm:text-sm font-light text-[#888880] leading-relaxed mt-4 max-w-2xl">
+          They are sweet, hydrating, and objectively one of nature's greatest creations. Beyond technology, I love diving into hardware gear research, exploring the outdoors, and spending long hours studying first-principles engineering models.
+        </p>
       </div>
     </section>
   );
